@@ -1,11 +1,25 @@
-import React from 'react';
-import './App.css';
+import React, {Fragment} from 'react';
+import './App.scss';
+import {Page} from "./components/Page";
 
-function App() {
+// function App({children}) {
+//     return (
+//         <Fragment>
+//             <Block/>
+//         </Fragment>
+//         <div className="App">
+//             {<Block/>}
+//         </div>
+//     );
+// }
+
+const App: React.FunctionComponent = () => {
     return (
-        <div className="App">
-        </div>
-    );
+        <Fragment>
+            <Page/>
+        </Fragment>
+
+    )
 }
 
 export default App;
