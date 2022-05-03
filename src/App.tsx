@@ -1,24 +1,12 @@
-import React, {Fragment} from 'react';
+import * as React from 'react';
 import './App.scss';
 import {Page} from "./components/Page";
 
-// function App({children}) {
-//     return (
-//         <Fragment>
-//             <Block/>
-//         </Fragment>
-//         <div className="App">
-//             {<Block/>}
-//         </div>
-//     );
-// }
-
 const App: React.FunctionComponent = () => {
     return (
-        <Fragment>
+        <div className="Page">
             <Page/>
-        </Fragment>
-
+        </div>
     )
 }
 

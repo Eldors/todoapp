@@ -1,42 +1,44 @@
-// import { useReducer } from "react";
-// import {AppState} from "./state";
-//
-// type Reducer<State, Action> = (state: State, action: Action) => State;
-// type State<>
-// export const [state, dispatch] = useReducer(reducer, initialState)
-
 import {StateContext} from "./state";
-import {IBlock} from "../components/Block";
+import {nanoid} from "nanoid"
 import {Reducer} from "react";
 
 export enum ActionType {
     ADD_BLOCK = 'Add block',
-    REMOVE_BLOCK = 'Remove block',
+    REMOVE_BLOCK = 'Remove block'
+}
+
+export type Payload = {
+    id?: string;
+    value?: string;
 }
 
 export type Action =
-    | { type: ActionType.ADD_BLOCK, payload: IBlock }
-    | { type: ActionType.REMOVE_BLOCK, payload: IBlock };
+    | { type: ActionType.ADD_BLOCK, payload?: Payload }
+    | { type: ActionType.REMOVE_BLOCK, payload?: Payload }
 
-export const reducer: Reducer<any, any> = (state: StateContext, action: Action) => {
+export const reducer: Reducer<StateContext, Action> = (state, action) => {
     switch (action.type) {
         case ActionType.ADD_BLOCK: {
-            const indexEvent = state.content.findIndex((i) => i.id === action.payload.id)
+            const indexEvent = state.content.findIndex((i) => i.id === action.payload?.id)
+            const newContent = [...state.content]
+            newContent.splice(indexEvent + 1, 0, {id: nanoid()})
             return {
                 ...state,
-                content: state.content.splice(
-                    indexEvent + 1,
-                    0,
-                    {
-                        value: 'someBlock',
-                        id: `${indexEvent}`
-                    })
+                content: newContent
             }
         }
         case ActionType.REMOVE_BLOCK: {
-            const indexEvent = state.content.findIndex((i) => i.id === action.payload.id)
-            return { ...state, content: state.content.splice(indexEvent, 1) }
+            const indexEvent = state.content.findIndex((i) => i.id === action.payload?.id)
+            const newContent = [...state.content]
+            newContent.splice(indexEvent, 1)
+            return {
+                ...state,
+                content: newContent
+            }
         }
-        default: new Error('Not among actions!')
+        default:
+            new Error('Not among actions!')
+            return state;
     }
 }
+
