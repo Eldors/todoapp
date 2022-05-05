@@ -9,13 +9,19 @@ export const Page = () => {
     return (
         <Fragment>
             {state.title}
+            <pre>
+                {JSON.stringify(state, null, 4)}
+            </pre>
             {
                 state.content.map(value => <Block
                     key={value.id}
                     dispatch={dispatch}
-                    id={value.id }
+                    id={value.id}
+                    value={value.value}
+                    focus={value.focus}
                 />)
             }
+
         </Fragment>
     );
 };

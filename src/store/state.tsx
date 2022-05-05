@@ -19,15 +19,20 @@ export interface Children {
 const data: Array<IBlock> = [
     {
         id: '1520eb3a-60a5-47f1-9066-96142a121cf6',
-        value: 'firstBlock',
+        value: '',
+        focus: false,
     },
     {
         id: '76e2290a-b29f-4df0-b792-493c51376316',
-        value: 'secondBlock',
+        value: '',
+        focus: false,
     }
 ]
 
-const defaultState: StateContext = {title: 'firstPage', content: data}
+const defaultState: StateContext = {
+    title: 'firstPage',
+    content: data
+}
 const myContext = createContext<Store>({state: defaultState})
 
 export const useStateContext = () => useContext(myContext)

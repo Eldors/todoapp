@@ -1,28 +1,49 @@
 import * as React from 'react';
-import {ChangeEvent} from 'react';
+import {ChangeEvent, useEffect} from 'react';
 import './TextField.scss'
 
 interface Props {
-    test: Function;
+    handlerUpdateContents: Function;
+    value: string;
+    handlerUpdateValue: Function;
+    focus: boolean;
+    toggleFocus: Function;
 }
 
 export function TextField(props: Props) {
 
-    function handlerResize(event: ChangeEvent<HTMLTextAreaElement>): void {
-        event.target.style.height = '24px';
-        event.target.style.height = event.target.scrollHeight + 'px'
+    const ref = React.useRef<HTMLTextAreaElement>(null);
+
+    function handlerResize(el: HTMLElement): void {
+        el.style.height = '24px';
+        el.style.height = el.scrollHeight + 'px'
     }
+
+    useEffect(() => {
+        if (!ref.current) return
+        handlerResize(ref.current)
+        if(props.focus) {
+             ref.current.focus()
+            props.toggleFocus()
+        }
+    })
 
     return (
         <textarea
+            ref={ref}
             className="text-field"
-            onInput={handlerResize}
+            onInput={(event: ChangeEvent<HTMLTextAreaElement>) => handlerResize(event.target)}
+            value={props.value}
             onKeyDown={(event) => {
-                if ((event.key === 'Enter' && !event.shiftKey) || event.key === 'Backspace') {
+                if ((event.key === 'Enter' && !event.shiftKey) || (event.key === 'Backspace' && props.value === '')) {
                     event.preventDefault();
-                    props.test(event.key)
+                    props.handlerUpdateContents(event.key)
                 }
-            }}>
+            }}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+                props.handlerUpdateValue(event.target.value)
+            }}
+        >
         </textarea>
     );
 }
